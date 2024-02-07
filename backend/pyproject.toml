@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "ecommerce"
+version = "0.1.0"
+description = ""
+authors = ["Karim Tayie <karimsherif2597@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.2.7"
+djangorestframework = "^3.14.0"
+django-cors-headers = "^4.3.1"
+pillow = "^10.1.0"
+djangorestframework-simplejwt = "^5.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
