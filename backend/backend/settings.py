@@ -32,7 +32,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
 
 
 # Application definition
@@ -120,7 +120,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "backend.wsgi.application"
+WSGI_APPLICATION = "backend.wsgi.app"
 
 
 # Database
