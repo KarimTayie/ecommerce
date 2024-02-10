@@ -23,7 +23,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "puddle/wsgi.py"
+        "dest": "backend/wsgi.py"
       }
     ]
   }
