@@ -1,14 +1,13 @@
-from django.shortcuts import render
+from django.utils import timezone
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Product, Order, OrderItem, ShippingAddress
-from base.serializers import ProductSerializer, OrderSerializer
+from base.serializers import OrderSerializer
 
 from rest_framework import status
-from datetime import datetime
 
 
 @api_view(["POST"])
@@ -35,7 +34,7 @@ def addOrderItems(request):
         )
 
         # (2) Create shipping address
-        shipping = ShippingAddress.objects.create(
+        ShippingAddress.objects.create(
             order=order,
             address=data["shippingAddress"]["address"],
             city=data["shippingAddress"]["city"],
@@ -92,7 +91,7 @@ def getOrderById(request, pk):
             serializer = OrderSerializer(order)
             return Response(serializer.data)
         else:
-            Response(
+            return Response(
                 {"detail": "Not authorized to view this order"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -109,7 +108,7 @@ def updateOrderToPaid(request, pk):
     order = Order.objects.get(_id=pk)
 
     order.isPaid = True
-    order.paidAt = datetime.now()
+    order.paidAt = timezone.now()
     order.save()
 
     return Response("Order was paid")
@@ -121,7 +120,7 @@ def updateOrderToDelivered(request, pk):
     order = Order.objects.get(_id=pk)
 
     order.isDelivered = True
-    order.deliveredAt = datetime.now()
+    order.deliveredAt = timezone.now()
     order.save()
 
     return Response("Order was delivered")
