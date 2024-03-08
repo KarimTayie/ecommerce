@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {Link, useParams, useNavigate} from 'react-router-dom'
 import {Form, Button} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Loader from '../components/Loader'
@@ -9,10 +9,7 @@ import {getUserDetails, updateUser} from '../actions/userActions'
 import {USER_UPDATE_RESET} from '../constants/userConstants'
 
 function UserEditScreen() {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search)
-    const userId = Number(searchParams.get("id"))
-
+    const {id: userId} = useParams()
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -32,7 +29,7 @@ function UserEditScreen() {
             dispatch({type: USER_UPDATE_RESET})
             navigate('/admin/userlist')
         } else {
-            if (!user.name || user._id !== userId) {
+            if (!user.name || user._id !== Number(userId)) {
                 dispatch(getUserDetails(userId))
             } else {
                 setName(user.name)

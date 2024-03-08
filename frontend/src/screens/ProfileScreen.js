@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {Form, Button, Row, Col, Table} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
@@ -17,9 +17,7 @@ function ProfileScreen() {
   const [message, setMessage] = useState('')
     
   const navigate = useNavigate()
-  const location = useLocation();
   const dispatch = useDispatch();
-  const searchParams = new URLSearchParams(location.search)
     
   const userDetails = useSelector(state => state.userDetails)
   const {error, loading, user} = userDetails
@@ -150,6 +148,9 @@ function ProfileScreen() {
                   <td>{order.createdAt.substring(0, 10)}</td>
                   <td>${order.totalPrice}</td>
                   <td>{order.isPaid ? order.paidAt.substring(0, 10) : (
+                    <i className='fas fa-times' style={{color: 'red'}}></i>
+                  )}</td>
+                  <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : (
                     <i className='fas fa-times' style={{color: 'red'}}></i>
                   )}</td>
                   <td>

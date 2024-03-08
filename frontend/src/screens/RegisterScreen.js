@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {Link, useSearchParams, useNavigate} from 'react-router-dom'
 import {Form, Button, Row, Col} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Loader from '../components/Loader'
@@ -15,9 +15,8 @@ function RegisterScreen() {
     const [message, setMessage] = useState('')
     
     const navigate = useNavigate()
-    const location = useLocation();
     const dispatch = useDispatch();
-    const searchParams = new URLSearchParams(location.search)
+    const [searchParams, _] = useSearchParams()
     const redirect = searchParams.get("redirect")
     
     const userRegister = useSelector(state => state.userRegister)

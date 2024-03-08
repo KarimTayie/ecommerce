@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {Table, Button} from 'react-bootstrap'
@@ -57,13 +57,13 @@ function OrderListScreen() {
                                     <td>{order.isPaid ? (
                                         order.paidAt.substring(0, 10)
                                     ) : (
-                                        <i className='fas fa-check' style={{color:'red'}}></i>
+                                        <i className='fas fa-times' style={{color:'red'}}></i>
                                     )}
                                     </td>
                                     <td>{order.isDelivered ? (
                                         order.deliveredAt.substring(0, 10)
                                     ) : (
-                                        <i className='fas fa-check' style={{color:'red'}}></i>
+                                        <i className='fas fa-times' style={{color:'red'}}></i>
                                     )}
                                     </td>
 

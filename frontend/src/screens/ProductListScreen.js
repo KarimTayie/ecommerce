@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import {useNavigate, useLocation} from 'react-router-dom'
+import React, {useEffect} from 'react'
+import {useNavigate, useSearchParams} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {Table, Button, Row, Col} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
@@ -12,8 +12,7 @@ import {PRODUCT_CREATE_RESET} from '../constants/productConstants'
 function ProductListScreen() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const location = useLocation()
-    const searchParams = new URLSearchParams(location.search)
+    const [searchParams, _] = useSearchParams()
 
     const productList = useSelector(state => state.productList)
     const {loading, error, products, pages, page} = productList
@@ -27,7 +26,8 @@ function ProductListScreen() {
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo} = userLogin
 
-    let keyword = searchParams.get("keyword")
+    const keyword = searchParams.get("keyword") || ''
+    const page_param = searchParams.get("page")
     useEffect(() => {
         dispatch({type: PRODUCT_CREATE_RESET})
 
@@ -38,10 +38,10 @@ function ProductListScreen() {
         if (successCreate) {
             navigate(`/admin/product/${createdProduct._id}/edit`)
         } else {
-            dispatch(listProducts(keyword))
+            dispatch(listProducts(keyword, page_param))
         }
 
-    }, [dispatch, navigate, userInfo, successDelete, successCreate, createdProduct, keyword])
+    }, [dispatch, navigate, userInfo, successDelete, successCreate, createdProduct, keyword, page_param])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure you want to delete this product?')) {

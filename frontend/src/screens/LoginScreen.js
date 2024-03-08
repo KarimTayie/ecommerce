@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {Link, useNavigate, useSearchParams} from 'react-router-dom'
 import {Form, Button, Row, Col} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Loader from '../components/Loader'
@@ -12,17 +12,16 @@ function LoginScreen() {
     const [password, setPassword] = useState('')
 
     const navigate = useNavigate()
-    const location = useLocation();
-    const dispatch = useDispatch();
-    const searchParams = new URLSearchParams(location.search)
-    const redirect = searchParams.get("redirect")
+    const dispatch = useDispatch()
+    const [searchParams, _] = useSearchParams()
+    const redirect = searchParams.get("redirect") || ''
 
     const userLogin = useSelector(state => state.userLogin)
     const {error, loading, userInfo} = userLogin
 
     useEffect(() => {
         if (userInfo) {
-            navigate(redirect)
+            navigate(`/${redirect}`)
         }
     }, [navigate, userInfo, redirect])
 

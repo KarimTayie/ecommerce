@@ -192,7 +192,7 @@ function ProductScreen() {
                             <Form.Label>Review</Form.Label>
                             <Form.Control
                               as='textarea'
-                              row='5'
+                              rows='5'
                               value={comment}
                               onChange={(e) => setComment(e.target.value)}
                             ></Form.Control>

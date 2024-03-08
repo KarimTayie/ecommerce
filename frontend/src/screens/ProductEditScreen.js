@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, {useState, useEffect} from 'react'
-import {Link, useLocation, useNavigate} from 'react-router-dom'
-import {Form, Button} from 'react-bootstrap'
+import {Link, useParams, useNavigate} from 'react-router-dom'
+import {Form, Button, Image} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -10,10 +10,7 @@ import {listProductDetails, updateProduct} from '../actions/productActions'
 import {PRODUCT_UPDATE_RESET} from '../constants/productConstants'
 
 function ProductEditScreen() {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search)
-    const productId = Number(searchParams.get("id"))
-
+    const {id: productId} = useParams()
 
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
@@ -26,7 +23,7 @@ function ProductEditScreen() {
     
     
     const navigate = useNavigate()
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     
     const productDetails = useSelector(state => state.productDetails)
     const {error, loading, product} = productDetails
@@ -40,7 +37,7 @@ function ProductEditScreen() {
             dispatch({type: PRODUCT_UPDATE_RESET})
             navigate('/admin/productlist')
         } else {
-            if (!product.name || product._id !== productId) {
+            if (!product.name || product._id !== Number(productId)) {
                 dispatch(listProductDetails(productId))
             } else {
                 setName(product.name)
@@ -136,22 +133,16 @@ function ProductEditScreen() {
 
                         <Form.Group controlId='image'>
                             <Form.Label>Image</Form.Label>
+
                             <Form.Control
-                                type='text'
+                                type='file'
                                 placeholder='Enter image'
-                                value={image}
-                                onChange={(e) => setImage(e.target.value)}
+                                onChange={uploadFileHandler}
                             >
                             </Form.Control>
+                            <Image className="my-2" src={image} style={{ maxHeight: '300px' }}/>
                             
-                            <Form.File
-                                id='image-file'
-                                label='Choose File'
-                                custom
-                                onChange={uploadFileHandler}
-                                >
-                            </Form.File>
-                            {uploading && <Loader/>}
+                            {uploading && <Loader />}
                         </Form.Group>
 
                         <Form.Group controlId='brand'>

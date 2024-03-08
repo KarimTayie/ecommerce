@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import {Button, Row, Col, ListGroup, Image, Card} from 'react-bootstrap'
 import {Link, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
@@ -18,7 +18,7 @@ function PlaceOrderScreen() {
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
     cart.shippingPrice = (cart.itemsPrice > 100 ? 0: 10).toFixed(2)
     cart.taxPrice = Number((0.082) * cart.itemsPrice).toFixed(2)
-    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingAddress) + Number(cart.taxPrice)).toFixed(2)
+    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
 
     if (!cart.paymentMethod) {
         navigate('/payment')
@@ -26,10 +26,10 @@ function PlaceOrderScreen() {
 
     useEffect(() => {
         if (success) {
-            navigate(`/order/${order}`)
+            navigate(`/order/${order._id}`)
             dispatch({type: ORDER_CREATE_RESET})
         }
-    }, [success, navigate, order])
+    }, [success, navigate, order, dispatch])
 
     const placeOrder = () => {
         dispatch(createOrder({

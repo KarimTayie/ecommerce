@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {useLocation} from 'react-router-dom'
+import {useSearchParams} from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
 import Loader from '../components/Loader'
@@ -11,17 +11,16 @@ import { listProducts } from '../actions/productActions'
 
 function HomeScreen() {
   const dispatch = useDispatch()
-  const location = useLocation()
+  const [searchParams, _] = useSearchParams()
 
   const productList = useSelector(state => state.productList)
   const {error, loading, products, page, pages} = productList
 
-  const searchParams = new URLSearchParams(location.search)
-  const keyword = searchParams.get("keyword")
-  console.log(keyword)
+  const keyword = searchParams.get("keyword") || ''
+  const page_param = searchParams.get("page")
   useEffect(() => {
-    dispatch(listProducts(keyword))
-  }, [dispatch, keyword])
+    dispatch(listProducts(keyword, page_param))
+  }, [dispatch, keyword, page_param])
 
   return (
     <div>
