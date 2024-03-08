@@ -4,19 +4,18 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
 from base.models import Product, Review
 from base.serializers import ProductSerializer
 
 
 @api_view(["GET"])
 def getProducts(request):
-    query = request.query_params.get("keyword")
+    keyword = request.query_params.get("keyword")
 
-    if query == None:
-        query = ""
-
-    products = Product.objects.filter(name__icontains=query)
+    if keyword:
+        products = Product.objects.filter(name__icontains=keyword).order_by("createdAt")
+    else:
+        products = Product.objects.all().order_by("createdAt")
 
     page = request.query_params.get("page")
     paginator = Paginator(products, 5)
@@ -39,7 +38,7 @@ def getProducts(request):
 
 
 @api_view(["GET"])
-def getTopProducts(requests):
+def getTopProducts(request):
     products = Product.objects.filter(rating__gte=4).order_by("-rating")[0:5]
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
@@ -105,7 +104,7 @@ def uploadImage(request):
 
     product.image = request.FILES.get("image")
     product.save()
-    return Response("Image was uploaded")
+    return Response(product.image.url)
 
 
 @api_view(["POST"])
@@ -129,7 +128,7 @@ def createProductReview(request, pk):
 
     # 3 - Create review
     else:
-        review = Review.objects.create(
+        Review.objects.create(
             user=user,
             product=product,
             name=user.first_name,
