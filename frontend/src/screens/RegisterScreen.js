@@ -17,14 +17,14 @@ function RegisterScreen() {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const [searchParams, _] = useSearchParams()
-    const redirect = searchParams.get("redirect")
+    const redirect = searchParams.get("redirect") || ''
     
     const userRegister = useSelector(state => state.userRegister)
     const {error, loading, userInfo} = userRegister
     
     useEffect(() => {
         if (userInfo) {
-            navigate(redirect)
+            navigate(`/${redirect}`)
         }
     }, [navigate, userInfo, redirect])
     
